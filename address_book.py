@@ -127,6 +127,7 @@ scrollbar.grid(row=7, column=3, padx=(0, 25), sticky=E)
 address_list.configure(yscrollcommand=scrollbar.set)
 scrollbar.configure(command=address_list.yview)
 
+# Bind select
 address_list.bind("<<ListboxSelect>>", select_entry)
 
 populate_list()
