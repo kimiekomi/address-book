@@ -1,5 +1,3 @@
-
-from cgi import FieldStorage
 from tkinter import *
 from tkinter import messagebox
 from database import Database
@@ -42,6 +40,10 @@ def select_entry(event):
         
 # Button Functions
 def add_entry():
+    if first_name.get() == "" or last_name.get() == "" or address.get() == "" or city.get() == "" or state.get() == "" or zipcode.get() == "":
+        messagebox.showerror("Required Fields", "All fields are required")
+        return
+
     database.add(first_name.get(), last_name.get(), address.get(), city.get(), state.get(), zipcode.get())
     address_list.delete(0, END)
     address_list.insert(END, (first_name.get(), last_name.get(), address.get(), city.get(), state.get(), zipcode.get()))

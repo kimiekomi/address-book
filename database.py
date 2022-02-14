@@ -20,8 +20,8 @@ class Database:
         self.cursor.execute("DELETE FROM addresses WHERE id=?", (id,))
         self.connect.commit()
 
-    def edit(self, first_name, last_name, address, city, state, zipcode):
-        self.cursor.execute("UPDATE addresses SET first_name=?, last_name=?, address=?, city=?, state=?, zipcode=? WHERE id=?", (first_name, last_name, address, city, state, zipcode))
+    def edit(self, id, first_name, last_name, address, city, state, zipcode):
+        self.cursor.execute("UPDATE addresses SET first_name=?, last_name=?, address=?, city=?, state=?, zipcode=? WHERE id=?", (id, first_name, last_name, address, city, state, zipcode))
         self.connect.commit()
 
     def __del__(self):
@@ -29,7 +29,7 @@ class Database:
 
     
 database = Database("address_book.db")
-database.add("Shelby", "Kim", "123 Wilde Avenue", "San Jose", "CA", "94134")
-database.add("Ashley", "Tanner", "456 Cunning Avenue", "San Francisco", "CA", "95634")
-database.add("Jamie", "Kimble", "678 Homer Avenue", "San Diego", "CA", "97824")
+database.add("Shelby", "Kim", "230 Wilde Avenue", "San Francisco", "CA", "94134")
+database.add("Michelle", "Lassiter", "10168 Foothill Boulevard", "Oakland", "CA", "94605")
+database.add("Mikae", "Lam", "455 West 200 North", "Salt Lake City", "UT", "84103")
 
