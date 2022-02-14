@@ -133,7 +133,7 @@ address_list.grid(row=7, column=0, columnspan=4, padx=(20,0), pady=(20,0), stick
 
 # Scrollbar
 scrollbar = Scrollbar(root)
-scrollbar.grid(row=7, column=3, padx=(0, 25), sticky=N+S+E)
+scrollbar.grid(row=7, column=3, padx=(0, 25), pady=(20,0), sticky=N+S+E)
 
 # Attach scrollbar to address_list
 address_list.config(yscrollcommand=scrollbar.set)
