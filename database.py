@@ -24,6 +24,9 @@ class Database:
         self.cursor.execute("UPDATE addresses SET first_name=?, last_name=?, address=?, city=?, state=?, zipcode=? WHERE id=?", (first_name, last_name, address, city, state, zipcode, id))
         self.connect.commit()
 
+    def delete_all(self):
+        self.cursor.execute("DROP TABLE addresses")
+
     def __del__(self):
         self.connect.close()
 
@@ -33,4 +36,3 @@ database = Database("address_book.db")
 # database.add("Michelle", "Lassiter", "10168 Foothill Boulevard", "Oakland", "CA", "94605")
 # database.add("Mikae", "Lam", "455 West 200 North", "Salt Lake City", "UT", "84103")
 # database.add("Lima", "Gamboa", "7589 State Hwy 120", "Groveland", "CA", "95321")
-

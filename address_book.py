@@ -4,7 +4,7 @@ from database import Database
 
 root = Tk()
 root.title("Address Book")
-root.geometry("665x400")
+root.geometry("665x420")
 
 database = Database("address_book.db")
 
@@ -67,6 +67,16 @@ def clear_input():
     state_entry.delete(0, END)
     zipcode_entry.delete(0, END)
 
+# Delete ALL entries in database
+def delete_all():
+    response = messagebox.askyesno("askyesno", "Are you sure you want to delete ALL records from database?")
+    
+    address_list.delete(0, END)
+
+    if response == 1:
+        for entry in database.fetch():
+            database.delete_all()
+
 
 # Labels and Entries
 first_name = StringVar()
@@ -114,6 +124,8 @@ edit_button = Button(root, text="Edit Entry", command=edit_entry)
 edit_button.grid(row=6, column=2, pady=(0,10))
 clear_button = Button(root, text="Clear Input", command=clear_input)
 clear_button.grid(row=6, column=3, pady=(0,10))
+delete_btn = Button(root, text="Delete All", command=delete_all)
+delete_btn.grid(row=8, column=0, columnspan=4, ipadx=70, pady=(8,20))
 
 # Address List
 address_list = Listbox(root, height=11, width=68)
@@ -121,14 +133,15 @@ address_list.grid(row=7, column=0, columnspan=4, padx=(20,0), pady=(20,0), stick
 
 # Scrollbar
 scrollbar = Scrollbar(root)
-scrollbar.grid(row=7, column=3, padx=(0, 25), sticky=E)
+scrollbar.grid(row=7, column=3, padx=(0, 25), sticky=N+S+E)
 
-# Set scrollbar to address_list
-address_list.configure(yscrollcommand=scrollbar.set)
-scrollbar.configure(command=address_list.yview)
+# Attach scrollbar to address_list
+address_list.config(yscrollcommand=scrollbar.set)
+scrollbar.config(command=address_list.yview)
 
 # Bind select
 address_list.bind("<<ListboxSelect>>", select_entry)
+
 
 populate_list()
 
