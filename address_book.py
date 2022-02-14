@@ -109,7 +109,7 @@ state_label.grid(row=2, column=0, padx=(20,0), pady=(0, 20), sticky=W)
 state_entry = Entry(root, textvariable=state)
 state_entry.grid(row=2, column=1, padx=20, pady=(0, 20))
 
-zipcode = IntVar()
+zipcode = StringVar()
 zipcode_label = Label(root, text="Zipcode", font=("bold"))
 zipcode_label.grid(row=2, column=2, padx=(20,0), pady=(0, 20), sticky=W)
 zipcode_entry = Entry(root, textvariable=zipcode)
