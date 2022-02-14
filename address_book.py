@@ -1,6 +1,7 @@
 
 from cgi import FieldStorage
 from tkinter import *
+from tkinter import messagebox
 from database import Database
 
 root = Tk()
@@ -14,6 +15,30 @@ def populate_list():
     address_list.delete(0, END)
     for row in database.fetch():
         address_list.insert(END, row)
+
+def select_entry(event):
+    global selected_entry
+    entry_index = address_list.curselection()[0]
+    selected_entry = address_list.get(entry_index)
+
+    first_name_entry.delete(0, END)
+    first_name_entry.insert(END, selected_entry[1])
+
+    last_name_entry.delete(0, END)
+    last_name_entry.insert(END, selected_entry[2])
+
+    address_entry.delete(0, END)
+    address_entry.insert(END, selected_entry[3])
+
+    city_entry.delete(0, END)
+    city_entry.insert(END, selected_entry[4])
+
+    state_entry.delete(0, END)
+    state_entry.insert(END, selected_entry[5])
+
+    zipcode_entry.delete(0, END)
+    zipcode_entry.insert(END, selected_entry[6])
+
         
 # Button Functions
 def add_entry():
@@ -24,13 +49,21 @@ def add_entry():
     populate_list()
 
 def remove_entry():
-    pass
+    database.remove(selected_entry[0])
+    clear_input()
+    populate_list()
 
 def edit_entry():
-    pass
+    database.edit(selected_entry[0], first_name.get(), last_name.get(), address.get(), city.get(), state.get(), zipcode.get())
+    populate_list()
 
 def clear_input():
-    pass
+    first_name_entry.delete(0, END)
+    last_name_entry.delete(0, END)
+    address_entry.delete(0, END)
+    city_entry.delete(0, END)
+    state_entry.delete(0, END)
+    zipcode_entry.delete(0, END)
 
 
 # Labels and Entries
@@ -88,14 +121,12 @@ address_list.grid(row=7, column=0, columnspan=4, padx=(20,0), pady=(20,0), stick
 scrollbar = Scrollbar(root)
 scrollbar.grid(row=7, column=3, padx=(0, 25), sticky=E)
 
-address_list.bind("<<")
-
 # Set scrollbar to address_list
 address_list.configure(yscrollcommand=scrollbar.set)
 scrollbar.configure(command=address_list.yview)
 
+address_list.bind("<<ListboxSelect>>", select_entry)
 
 populate_list()
-
 
 root.mainloop()
