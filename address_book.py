@@ -55,8 +55,8 @@ def remove_entry():
     clear_input()
     populate_list()
 
-def edit_entry():
-    database.edit(selected_entry[0], first_name.get(), last_name.get(), address.get(), city.get(), state.get(), zipcode.get())
+def update_entry():
+    database.update(selected_entry[0], first_name.get(), last_name.get(), address.get(), city.get(), state.get(), zipcode.get())
     populate_list()
 
 def clear_input():
