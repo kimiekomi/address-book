@@ -34,8 +34,8 @@ class Database:
     
 database = Database("address_book.db")
 database.add("Shelby", "Kim", "230 Wilde Avenue", "San Francisco", "CA", "94134")
-database.add("Michelle", "Lassiter", "10168 Foothill Boulevard", "Oakland", "CA", "94605")
-database.add("Mikae", "Lam", "455 West 200 North", "Salt Lake City", "UT", "84103")
+# database.add("Michelle", "Lassiter", "10168 Foothill Boulevard", "Oakland", "CA", "94605")
+# database.add("Mikae", "Lam", "455 West 200 North", "Salt Lake City", "UT", "84103")
 # database.add("Lima", "Gamboa", "7589 State Hwy 120", "Groveland", "CA", "95321")
 # database.add("Oriko", "Gamboa", "1293 Macdonald Drive", "Pinole", "CA", "94564")
 # database.add("Ben", "Lam", "7224 Beja Court", "Elk Grove", "CA", "95757")
