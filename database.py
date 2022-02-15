@@ -10,6 +10,7 @@ class Database:
     def fetch(self):
         self.cursor.execute("SELECT * FROM addresses")
         rows = self.cursor.fetchall()
+            
         return rows
 
     def add(self, first_name, last_name, address, city, state, zipcode):
@@ -33,11 +34,11 @@ class Database:
 
     
 database = Database("address_book.db")
-database.add("Rachel", "Green", "123 Park Avenue", "New York", "NY", "95123")
+# database.add("Rachel", "Green", "123 Park Avenue", "New York", "NY", "95123")
 # database.add("Ross", "Geller", "123 Park Avenue", "New York", "NY", "95123")
-# database.add("Monica", "Geller", "456 Rosten Road", "New York", "NY", "95123")
+# database.add("Joey", "Tribbiani", "456 Rosten Road", "New York", "NY", "95123")
 # database.add("Chandler", "Bing", "789 Primrose Street", "New York", "NY", "95123")
-# database.add("Joey", "Tribbiani", "012 Hatten Drive", "New York", "NY", "95123")
+# database.add("Monica", "Geller", "012 Hatten Drive", "New York", "NY", "95123")
 # database.add("Phoebe", "Buffet", "345 Rosita Avenue", "New York", "NY", "95123")
 # database.add("Sheldon", "Cooper", "678 Linwood Road", "Santa Monica", "CA", "94567")
 # database.add("Leonard", "Hofstader", "678 Linwood Road", "Santa Monica", "CA", "94567")
@@ -48,7 +49,7 @@ database.add("Rachel", "Green", "123 Park Avenue", "New York", "NY", "95123")
 # database.add("Arthur", "Spooner", "901 Woodrow Drive", "Trentor", "NJ", "94789")
 # database.add("Jerry", "Seinfeld", "234 State Avenue", "New York", "NY", "92345")
 # database.add("Kramer", "Kramer", "234 State Avenue", "New York", "NY", "92345")
-# database.add("George Costanza", "234 State Avenue", "New York", "NY", "92345")
+# database.add("George", "Costanza", "234 State Avenue", "New York", "NY", "92345")
 # database.add("Elaine", "Bennis", "234 State Avenue", "New York", "NY", "92345")
 # database.add("Mindy", "Lahiri", "567 Goldberg Way", "San Francisco", "CA", "96543")
 # database.add("Danny", "Castellano", "567 Goldberg Way", "San Francisco", "CA", "96543")

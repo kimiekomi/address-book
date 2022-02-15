@@ -37,6 +37,8 @@ def select_entry(event):
     zipcode_entry.delete(0, END)
     zipcode_entry.insert(END, selected_entry[6])
 
+    return selected_entry
+
         
 # Button Functions
 def add_entry():
@@ -46,16 +48,20 @@ def add_entry():
 
     database.add(first_name.get(), last_name.get(), address.get(), city.get(), state.get(), zipcode.get())
     address_list.delete(0, END)
-    address_list.insert(END, (first_name.get(), last_name.get(), address.get(), city.get(), state.get(), zipcode.get()))
+    address_list.insert(END, first_name.get(), last_name.get(), address.get(), city.get(), state.get(), zipcode.get())
     clear_input()
     populate_list()
 
 def remove_entry():
+    # selected_entry = select_entry()
+
     database.remove(selected_entry[0])
     clear_input()
     populate_list()
 
 def update_entry():
+    # selected_entry = select_entry()
+
     database.update(selected_entry[0], first_name.get(), last_name.get(), address.get(), city.get(), state.get(), zipcode.get())
     populate_list()
 
@@ -120,7 +126,7 @@ add_button = Button(root, text="Add Entry", command=add_entry)
 add_button.grid(row=6, column=0, padx=(20,0), pady=(0,10))
 remove_button = Button(root, text="Remove Entry", command=remove_entry)
 remove_button.grid(row=6, column=1, pady=(0,10))
-edit_button = Button(root, text="Edit Entry", command=edit_entry)
+edit_button = Button(root, text="Edit Entry", command=update_entry)
 edit_button.grid(row=6, column=2, pady=(0,10))
 clear_button = Button(root, text="Clear Input", command=clear_input)
 clear_button.grid(row=6, column=3, pady=(0,10))
