@@ -1,5 +1,7 @@
+from audioop import add
 from tkinter import *
 from tkinter import messagebox
+from tkinter import ttk
 from database import Database
 
 root = Tk()
@@ -133,7 +135,7 @@ clear_button.grid(row=6, column=3, pady=(0,10))
 delete_btn = Button(root, text="Delete All", command=delete_all)
 delete_btn.grid(row=8, column=0, columnspan=4, ipadx=70, pady=(8,20))
 
-# Address List
+# Address Listbox
 address_list = Listbox(root, height=11, width=68)
 address_list.grid(row=7, column=0, columnspan=4, padx=(20,0), pady=(20,0), sticky=W)
 
