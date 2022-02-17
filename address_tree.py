@@ -4,22 +4,55 @@ from tkinter import ttk
 
 root = Tk()
 root.title("Address Book")
-root.geometry("700x420")
+root.geometry("700x450")
 
 def add_entry():
-    pass
+    if first_name_entry.get() == "" or last_name_entry.get() == "" or address_entry.get() == "" or city_entry.get() == "" or state_entry.get() =="" or zipcode_entry.get() == "":
+        messagebox.showerror("Required Fields", "All fields are required")
+        return
+
+    global count
+    address_tree.insert(parent="", index="end", iid=count, text="", values=(count+1, first_name_entry.get(), last_name_entry.get(), address_entry.get(), city_entry.get(), state_entry.get(), zipcode_entry.get()))
+    count += 1
+    clear_input()
 
 def remove_entry():
-    pass
+    for entry in address_tree.selection():
+        address_tree.delete(entry)
+    
 
 def update_entry():
-    pass
+    first_name_entry.delete(0, END)
+    first_name_entry.insert(END, selected_entry[1])
+
+    last_name_entry.delete(0, END)
+    last_name_entry.insert(END, selected_entry[2])
+
+    address_entry.delete(0, END)
+    address_entry.insert(END, selected_entry[3])
+
+    city_entry.delete(0, END)
+    city_entry.insert(END, selected_entry[4])
+
+    state_entry.delete(0, END)
+    state_entry.insert(END, selected_entry[5])
+
+    zipcode_entry.delete(0, END)
 
 def clear_input():
-    pass
+    first_name_entry.delete(0, END)
+    last_name_entry.delete(0, END)
+    address_entry.delete(0, END)
+    city_entry.delete(0, END)
+    state_entry.delete(0, END)
+    zipcode_entry.delete(0, END)
 
 def delete_all():
-    pass
+    response = messagebox.askyesno("askyesno", "Are you sure you want to delete ALL records?")
+    for entry in address_tree.get_children():
+        address_tree.delete(entry)
+
+
 
 #  Address Treeview
 address_tree = ttk.Treeview(root, height=11)
@@ -103,7 +136,7 @@ edit_button.grid(row=6, column=2, pady=(0,10))
 clear_button = Button(root, text="Clear Input", command=clear_input)
 clear_button.grid(row=6, column=3, pady=(0,10))
 delete_btn = Button(root, text="Delete All", command=delete_all)
-delete_btn.grid(row=8, column=0, columnspan=4, ipadx=70, pady=(8,20))
+delete_btn.grid(row=8, column=0, columnspan=4, padx=(65, 0), ipadx=80, pady=(8,20))
 
 # Add data
 entries = [
@@ -130,9 +163,10 @@ entries = [
     [21, "Jeremy", "Reed", "567 Goldberg Way", "San Francisco", "CA", "96543"]
 ]
 
+global count
 count = 0
 for entry in entries:
-    address_tree.insert(parent="", index="end", iid=count, text="", values=(entry[0], entry[1], entry[2], entry[3], entry[4], entry[5], entry[6]))
+    address_tree.insert(parent="", index="end", iid=count, text="", values=(count+1, entry[1], entry[2], entry[3], entry[4], entry[5], entry[6]))
     count += 1
     
 
