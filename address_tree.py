@@ -2,74 +2,77 @@ from tkinter import *
 from tkinter import messagebox
 from tkinter import ttk
 import sqlite3
+from tree_database import TreeDatabase
 
 root = Tk()
 root.title("Address Book")
 root.geometry("700x450")
 
-# Database
-connection = sqlite3.connect("tree_database.db")
-cursor = connection.cursor()
-cursor.execute("CREATE TABLE IF NOT EXISTS contacts (id INTEGER PRIMARY KEY, first_name text, last_name text, address text, city text, state text, zipcode text)")
 
 # Faux data
-entries = [
-    [1, "Rachel", "Green", "123 Park Avenue", "New York", "NY", "95123"],
-    [2, "Ross", "Geller", "123 Park Avenue", "New York", "NY", "95123"],
-    [3, "Joey", "Tribbiani", "456 Rosten Road", "New York", "NY", "95123"],
-    [4, "Chandler", "Bing", "789 Primrose Street", "New York", "NY", "95123"],
-    [5, "Monica", "Geller", "012 Hatten Drive", "New York", "NY", "95123"],
-    [6, "Phoebe", "Buffet", "345 Rosita Avenue", "New York", "NY", "95123"],
-    [7, "Sheldon", "Cooper", "678 Linwood Road", "Santa Monica", "CA", "94567"],
-    [8, "Leonard", "Hofstader", "678 Linwood Road", "Santa Monica", "CA", "94567"],
-    [9, "Rajesh", "Koothrapalli", "678 Linwood Road", "Santa Monica", "CA", "94567"],
-    [10, "Howard", "Wolowitz", "678 Linwood Road", "Santa Monica", "CA", "94567"],
-    [11, "Douglas", "Heffernan", "901 Woodrow Drive", "Trentor", "NJ", "94789"],
-    [12, "Carrie", "Heffernan", "901 Woodrow Drive", "Trentor", "NJ", "94789"],
-    [13, "Arthur", "Spooner", "901 Woodrow Drive", "Trentor", "NJ", "94789"],
-    [14, "Jerry", "Seinfeld", "234 State Avenue", "New York", "NY", "92345"],
-    [15, "Kramer", "Kramer", "234 State Avenue", "New York", "NY", "92345"],
-    [16, "George", "Costanza", "234 State Avenue", "New York", "NY", "92345"],
-    [17, "Elaine", "Bennis", "234 State Avenue", "New York", "NY", "92345"],
-    [18, "Mindy", "Lahiri", "567 Goldberg Way", "San Francisco", "CA", "96543"],
-    [19, "Danny", "Castellano", "567 Goldberg Way", "San Francisco", "CA", "96543"],
-    [20, "Morgan", "Tookers", "567 Goldberg Way", "San Francisco", "CA", "96543"],
-    [21, "Jeremy", "Reed", "567 Goldberg Way", "San Francisco", "CA", "96543"]
-]
+# entries = [
+#     [1, "Rachel", "Green", "123 Park Avenue", "New York", "NY", "95123"],
+#     [2, "Ross", "Geller", "123 Park Avenue", "New York", "NY", "95123"],
+#     [3, "Joey", "Tribbiani", "456 Rosten Road", "New York", "NY", "95123"],
+#     [4, "Chandler", "Bing", "789 Primrose Street", "New York", "NY", "95123"],
+#     [5, "Monica", "Geller", "012 Hatten Drive", "New York", "NY", "95123"],
+#     [6, "Phoebe", "Buffet", "345 Rosita Avenue", "New York", "NY", "95123"],
+#     [7, "Sheldon", "Cooper", "678 Linwood Road", "Santa Monica", "CA", "94567"],
+#     [8, "Leonard", "Hofstader", "678 Linwood Road", "Santa Monica", "CA", "94567"],
+#     [9, "Rajesh", "Koothrapalli", "678 Linwood Road", "Santa Monica", "CA", "94567"],
+#     [10, "Howard", "Wolowitz", "678 Linwood Road", "Santa Monica", "CA", "94567"],
+#     [11, "Douglas", "Heffernan", "901 Woodrow Drive", "Trentor", "NJ", "94789"],
+#     [12, "Carrie", "Heffernan", "901 Woodrow Drive", "Trentor", "NJ", "94789"],
+#     [13, "Arthur", "Spooner", "901 Woodrow Drive", "Trentor", "NJ", "94789"],
+#     [14, "Jerry", "Seinfeld", "234 State Avenue", "New York", "NY", "92345"],
+#     [15, "Kramer", "Kramer", "234 State Avenue", "New York", "NY", "92345"],
+#     [16, "George", "Costanza", "234 State Avenue", "New York", "NY", "92345"],
+#     [17, "Elaine", "Bennis", "234 State Avenue", "New York", "NY", "92345"],
+#     [18, "Mindy", "Lahiri", "567 Goldberg Way", "San Francisco", "CA", "96543"],
+#     [19, "Danny", "Castellano", "567 Goldberg Way", "San Francisco", "CA", "96543"],
+#     [20, "Morgan", "Tookers", "567 Goldberg Way", "San Francisco", "CA", "96543"],
+#     [21, "Jeremy", "Reed", "567 Goldberg Way", "San Francisco", "CA", "96543"]
+# ]
 
-def show_entries():
-    for entry in entries:
-        cursor.execute("INSERT INTO contacts VALUES (:id, first_name, :first_name, :last_name, :address, :city, :state, :zipcode)", 
-        {
-            "ID": entry[0], 
-            "first_name": entry[1],
-            "last_name": entry[2],
-            "address": entry[3],
-            "city": entry[4],
-            "state": entry[5],
-            "zipcode": entry[6]
-        })
+# Database
+# connection = sqlite3.connect("tree_database.db")
+# cursor = connection.cursor()
+# cursor.execute("CREATE TABLE IF NOT EXISTS contacts (id INTEGER PRIMARY KEY, first_name text, last_name text, address text, city text, state text, zipcode text)")
 
-connection.commit()
-connection.close()
+# Add entries to table
+# for entry in entries:
+#     cursor.execute("INSERT or IGNORE INTO contacts VALUES (:ID, :first_name, :last_name, :address, :city, :state, :zipcode)", 
+#     {
+#         "ID": entry[0], 
+#         "first_name": entry[1],
+#         "last_name": entry[2],
+#         "address": entry[3],
+#         "city": entry[4],
+#         "state": entry[5],
+#         "zipcode": entry[6]
+#     })
+
+# connection.commit()
+# connection.close()
 
 def fetch_entries():
-    connection = sqlite3.connect("tree_database.db")
-    cursor = connection.cursor()
+#     connection = sqlite3.connect("tree_database.db")
+#     cursor = connection.cursor()
 
-    cursor.execute("SELECT * FROM contacts")
-    friends = cursor.fetchall()
-    print(friends)
+#     cursor.execute("SELECT * FROM contacts")
+#     friends = cursor.fetchall()
+
+    address_tree.delete(0, END)
 
     global count
     count = 0
     
-    for friend in entries:
-        address_tree.insert(parent="", index="end", iid=count, text="", values=(count+1, friend[1], friend[2], friend[3], friend[4], friend[5], friend[6]))
+    for entry in tree_database.fetch():
+        address_tree.insert(END, entry)
         count += 1
 
-    connection.commit()
-    connection.close()
+#     connection.commit()
+#     connection.close()
 
 def add_entry():
     if first_name_entry.get() == "" or last_name_entry.get() == "" or address_entry.get() == "" or city_entry.get() == "" or state_entry.get() =="" or zipcode_entry.get() == "":
@@ -77,9 +80,16 @@ def add_entry():
         return
 
     global count
+
+    TreeDatabase.add(count+1, first_name.get(), last_name.get(), address_entry.get(), city_entry.get(), state_entry.get(), zipcode_entry.get())
+
+    address_tree.delete(0, END)
     address_tree.insert(parent="", index="end", iid=count, text="", values=(count+1, first_name_entry.get(), last_name_entry.get(), address_entry.get(), city_entry.get(), state_entry.get(), zipcode_entry.get()))
     count += 1
+
     clear_input()
+    fetch_entries()
+
 
 def remove_entry():
     for entry in address_tree.selection():

@@ -2,7 +2,7 @@ from audioop import add
 from tkinter import *
 from tkinter import messagebox
 from tkinter import ttk
-from database import Database
+from list_database import Database
 
 root = Tk()
 root.title("Address Book")
@@ -38,8 +38,6 @@ def select_entry(event):
 
     zipcode_entry.delete(0, END)
     zipcode_entry.insert(END, selected_entry[6])
-
-    return selected_entry
 
         
 # Button Functions
