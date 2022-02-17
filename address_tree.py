@@ -19,7 +19,24 @@ def add_entry():
 def remove_entry():
     for entry in address_tree.selection():
         address_tree.delete(entry)
-    
+
+def select_entry(event):  
+    first_name_entry.delete(0, END)
+    last_name_entry.delete(0, END)
+    address_entry.delete(0, END)
+    city_entry.delete(0, END)
+    state_entry.delete(0, END)
+    zipcode_entry.delete(0, END)
+
+    selected_entry = address_tree.focus()
+    values = address_tree.item(selected_entry, "values")
+
+    first_name_entry.insert(END, values[1])
+    last_name_entry.insert(END, values[2])
+    address_entry.insert(END, values[3])
+    city_entry.insert(END, values[4])
+    state_entry.insert(END, values[5])
+    zipcode_entry.insert(END, values[6])
 
 def update_entry():
     first_name_entry.delete(0, END)
@@ -51,7 +68,6 @@ def delete_all():
     response = messagebox.askyesno("askyesno", "Are you sure you want to delete ALL records?")
     for entry in address_tree.get_children():
         address_tree.delete(entry)
-
 
 
 #  Address Treeview
@@ -88,6 +104,9 @@ scrollbar.grid(row=7, column=7, pady=(20,0), sticky=N+S+E)
 # Attach scrollbar to address_tree
 address_tree.config(yscrollcommand=scrollbar.set)
 scrollbar.config(command=address_tree.yview)
+
+# Bind select
+address_tree.bind("<<TreeviewSelect>>", select_entry)
 
 # Labels and Entries
 first_name = StringVar()
