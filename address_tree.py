@@ -112,8 +112,7 @@ def remove_entry():
     connection = sqlite3.connect("tree_database.db")
     cursor = connection.cursor()
 
-    global selected_entry
-
+    selected_entry = address_tree.item(address_tree.focus(), "values")
     id = selected_entry[0]
 
     if debug: print(id)
@@ -138,7 +137,6 @@ def select_entry(event):
     state_entry.delete(0, END)
     zipcode_entry.delete(0, END)
 
-    global selected_entry
     selected_entry = address_tree.item(address_tree.focus(), "values")
 
     if debug: print(selected_entry)
@@ -160,22 +158,12 @@ def update_entry():
     connection = sqlite3.connect("tree_database.db")
     cursor = connection.cursor()
 
-    global selected_entry
-
+    selected_entry = address_tree.item(address_tree.focus(), "values")
     id = selected_entry[0]
 
     if debug: print(id)
 
-    cursor.execute(f"UPDATE contacts SET (first_name = first_name, last_name = last_name, address = address, city = city, state = state, zipcode = zipcode) WHERE ID = '{id}'", 
-        {
-            # "ID": count, 
-            "first_name": first_name.get(), 
-            "last_name": last_name.get(), 
-            "address": address.get(),
-            "city": city.get(),
-            "state": state.get(),
-            "zipcode": zipcode.get()
-        })
+    cursor.execute(f"UPDATE contacts SET first_name=?, last_name=?, address=?, city=?, state=?, zipcode=? WHERE ID=?", (first_name, last_name, address, city, state, zipcode, id))
 
     connection.commit()
     connection.close()
@@ -294,8 +282,8 @@ add_button = Button(root, text="Add Entry", command=add_entry)
 add_button.grid(row=6, column=0, padx=(20,0), pady=(0,10))
 remove_button = Button(root, text="Remove Entry", command=remove_entry)
 remove_button.grid(row=6, column=1, pady=(0,10))
-edit_button = Button(root, text="Edit Entry", command=update_entry)
-edit_button.grid(row=6, column=2, pady=(0,10))
+update_button = Button(root, text="Update Entry", command=update_entry)
+update_button.grid(row=6, column=2, pady=(0,10))
 clear_button = Button(root, text="Clear Input", command=clear_input)
 clear_button.grid(row=6, column=3, pady=(0,10))
 delete_btn = Button(root, text="Delete All", command=delete_all)
