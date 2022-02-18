@@ -2,11 +2,14 @@ from tkinter import *
 from tkinter import messagebox
 from tkinter import ttk
 import sqlite3
+from xml.dom.pulldom import END_ELEMENT
 # from tree_database import TreeDatabase
+
+debug = False
 
 root = Tk()
 root.title("Address Book")
-root.geometry("700x450")
+root.geometry("700x455")
 
 
 # Faux data
@@ -55,29 +58,28 @@ connection.commit()
 connection.close()
 
 def fetch_entries():
+    if debug: print("initialized fetch_entries()")
+
     connection = sqlite3.connect("tree_database.db")
     cursor = connection.cursor()
 
     cursor.execute("SELECT * FROM contacts")
     friends = cursor.fetchall()
-
-    global count
-    count = 0
     
     for friend in friends:
-        print(friend)
+        if debug: print(friend)
+
         address_tree.insert(parent="", index="end", text="", values=(friend[0], friend[1], friend[2], friend[3], friend[4], friend[5], friend[6]))
-        count += 1
 
     connection.commit()
     connection.close()
 
 def add_entry():
+    if debug: print("initialized add_entry()")
+
     if first_name_entry.get() == "" or last_name_entry.get() == "" or address_entry.get() == "" or city_entry.get() == "" or state_entry.get() =="" or zipcode_entry.get() == "":
         messagebox.showerror("Required Fields", "All fields are required")
         return
-
-    global count
 
     connection = sqlite3.connect("tree_database.db")
     cursor = connection.cursor()
@@ -96,20 +98,25 @@ def add_entry():
     connection.commit()
     connection.close()
 
-    # address_tree.delete(0, END)
-    address_tree.insert(parent="", index="end", text="", values=(first_name_entry.get(), last_name_entry.get(), address_entry.get(), city_entry.get(), state_entry.get(), zipcode_entry.get()))
-    count += 1
+    for row in address_tree.get_children():
+        address_tree.delete(row)
+
+    address_tree.insert("", END, values=(first_name_entry.get(), last_name_entry.get(), address_entry.get(), city_entry.get(), state_entry.get(), zipcode_entry.get()))
 
     clear_input()
     fetch_entries()
 
 def remove_entry():
+    if debug: print("initialized remove_entry()")
+
     connection = sqlite3.connect("tree_database.db")
     cursor = connection.cursor()
 
     global selected_entry
+
     id = selected_entry[0]
-    print(id)
+
+    if debug: print(id)
 
     cursor.execute(f"DELETE FROM contacts WHERE ID='{id}'")
 
@@ -117,6 +124,8 @@ def remove_entry():
     connection.close()
 
     for entry in address_tree.selection():
+        if debug: print(address_tree.selection)
+
         address_tree.delete(entry)
 
     clear_input()
@@ -131,10 +140,11 @@ def select_entry(event):
 
     global selected_entry
     selected_entry = address_tree.item(address_tree.focus(), "values")
-    print(selected_entry)
+
+    if debug: print(selected_entry)
 
     if not selected_entry:
-        print(selected_entry[0])
+        if debug: print(selected_entry[0])
         return
 
     first_name_entry.insert(END, selected_entry[1])
@@ -145,10 +155,27 @@ def select_entry(event):
     zipcode_entry.insert(END, selected_entry[6])
 
 def update_entry():
+    if debug: print("initialized update_entry()")
+
     connection = sqlite3.connect("tree_database.db")
     cursor = connection.cursor()
 
-    cursor.execute("UPDATE contacts SET first_name=?, last_name=?, address=?, city=?, state=?, zipcode=? WHERE id=?", (first_name, last_name, address, city, state, zipcode, count))
+    global selected_entry
+
+    id = selected_entry[0]
+
+    if debug: print(id)
+
+    cursor.execute(f"UPDATE contacts SET (first_name = first_name, last_name = last_name, address = address, city = city, state = state, zipcode = zipcode) WHERE ID = '{id}'", 
+        {
+            # "ID": count, 
+            "first_name": first_name.get(), 
+            "last_name": last_name.get(), 
+            "address": address.get(),
+            "city": city.get(),
+            "state": state.get(),
+            "zipcode": zipcode.get()
+        })
 
     connection.commit()
     connection.close()
@@ -163,6 +190,8 @@ def update_entry():
     zipcode_entry.delete(0, END)
 
 def clear_input():
+    if debug: print("initialized clear_input()")
+
     first_name_entry.delete(0, END)
     last_name_entry.delete(0, END)
     address_entry.delete(0, END)
@@ -171,9 +200,19 @@ def clear_input():
     zipcode_entry.delete(0, END)
 
 def delete_all():
+    if debug: print("initialized delete_all()")
+
     response = messagebox.askyesno("askyesno", "Are you sure you want to delete ALL records?")
-    for entry in address_tree.get_children():
-        address_tree.delete(entry)
+
+    if response == 1:
+        connection = sqlite3.connect("tree_database.db")
+        cursor = connection.cursor()
+        cursor.execute("DELETE FROM contacts")
+        connection.commit()
+        connection.close()
+
+        for entry in address_tree.get_children():
+            address_tree.delete(entry)
 
 #  Address Treeview
 address_tree = ttk.Treeview(root, height=11)
