@@ -2,7 +2,7 @@ from tkinter import *
 from tkinter import messagebox
 from tkinter import ttk
 import sqlite3
-from tree_database import TreeDatabase
+# from tree_database import TreeDatabase
 
 root = Tk()
 root.title("Address Book")
@@ -35,15 +35,14 @@ root.geometry("700x450")
 # ]
 
 # Database
-# connection = sqlite3.connect("tree_database.db")
-# cursor = connection.cursor()
-# cursor.execute("CREATE TABLE IF NOT EXISTS contacts (id INTEGER PRIMARY KEY, first_name text, last_name text, address text, city text, state text, zipcode text)")
+connection = sqlite3.connect("tree_database.db")
+cursor = connection.cursor()
+cursor.execute("CREATE TABLE IF NOT EXISTS contacts (id INTEGER PRIMARY KEY AUTOINCREMENT, first_name text, last_name text, address text, city text, state text, zipcode text)")
 
 # Add entries to table
 # for entry in entries:
-#     cursor.execute("INSERT or IGNORE INTO contacts VALUES (:ID, :first_name, :last_name, :address, :city, :state, :zipcode)", 
-#     {
-#         "ID": entry[0], 
+#     cursor.execute("INSERT or IGNORE INTO contacts VALUES (NULL, :first_name, :last_name, :address, :city, :state, :zipcode)", 
+#     { 
 #         "first_name": entry[1],
 #         "last_name": entry[2],
 #         "address": entry[3],
@@ -52,8 +51,8 @@ root.geometry("700x450")
 #         "zipcode": entry[6]
 #     })
 
-# connection.commit()
-# connection.close()
+connection.commit()
+connection.close()
 
 def fetch_entries():
     connection = sqlite3.connect("tree_database.db")
@@ -66,7 +65,8 @@ def fetch_entries():
     count = 0
     
     for friend in friends:
-        address_tree.insert(parent="", index="end", iid=count, text="", values=(friend[0], friend[1], friend[2], friend[3], friend[4], friend[5], friend[6]))
+        print(friend)
+        address_tree.insert(parent="", index="end", text="", values=(friend[0], friend[1], friend[2], friend[3], friend[4], friend[5], friend[6]))
         count += 1
 
     connection.commit()
@@ -82,9 +82,9 @@ def add_entry():
     connection = sqlite3.connect("tree_database.db")
     cursor = connection.cursor()
 
-    cursor.execute("INSERT INTO contacts VALUES (:ID, :first_name, :last_name, :address, :city, :state, :zipcode)", 
+    cursor.execute("INSERT INTO contacts VALUES (NULL, :first_name, :last_name, :address, :city, :state, :zipcode)", 
         {
-            "ID": count, 
+            # "ID": count, 
             "first_name": first_name.get(), 
             "last_name": last_name.get(), 
             "address": address.get(),
@@ -96,8 +96,8 @@ def add_entry():
     connection.commit()
     connection.close()
 
-    address_tree.delete(0, END)
-    address_tree.insert(parent="", index="end", iid=count, text="", values=(count+1, first_name_entry.get(), last_name_entry.get(), address_entry.get(), city_entry.get(), state_entry.get(), zipcode_entry.get()))
+    # address_tree.delete(0, END)
+    address_tree.insert(parent="", index="end", text="", values=(first_name_entry.get(), last_name_entry.get(), address_entry.get(), city_entry.get(), state_entry.get(), zipcode_entry.get()))
     count += 1
 
     clear_input()
@@ -109,8 +109,9 @@ def remove_entry():
 
     global selected_entry
     id = selected_entry[0]
-    
-    cursor.execute("DELETE FROM contacts WHERE ID=id")
+    print(id)
+
+    cursor.execute(f"DELETE FROM contacts WHERE ID='{id}'")
 
     connection.commit()
     connection.close()
@@ -130,8 +131,10 @@ def select_entry(event):
 
     global selected_entry
     selected_entry = address_tree.item(address_tree.focus(), "values")
+    print(selected_entry)
 
     if not selected_entry:
+        print(selected_entry[0])
         return
 
     first_name_entry.insert(END, selected_entry[1])
