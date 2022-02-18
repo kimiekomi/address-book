@@ -56,23 +56,21 @@ root.geometry("700x450")
 # connection.close()
 
 def fetch_entries():
-#     connection = sqlite3.connect("tree_database.db")
-#     cursor = connection.cursor()
+    connection = sqlite3.connect("tree_database.db")
+    cursor = connection.cursor()
 
-#     cursor.execute("SELECT * FROM contacts")
-#     friends = cursor.fetchall()
-
-    address_tree.delete(0, END)
+    cursor.execute("SELECT * FROM contacts")
+    friends = cursor.fetchall()
 
     global count
     count = 0
     
-    for entry in tree_database.fetch():
-        address_tree.insert(END, entry)
+    for friend in friends:
+        address_tree.insert(parent="", index="end", iid=count, text="", values=(friend[0], friend[1], friend[2], friend[3], friend[4], friend[5], friend[6]))
         count += 1
 
-#     connection.commit()
-#     connection.close()
+    connection.commit()
+    connection.close()
 
 def add_entry():
     if first_name_entry.get() == "" or last_name_entry.get() == "" or address_entry.get() == "" or city_entry.get() == "" or state_entry.get() =="" or zipcode_entry.get() == "":
@@ -81,7 +79,22 @@ def add_entry():
 
     global count
 
-    TreeDatabase.add(count+1, first_name.get(), last_name.get(), address_entry.get(), city_entry.get(), state_entry.get(), zipcode_entry.get())
+    connection = sqlite3.connect("tree_database.db")
+    cursor = connection.cursor()
+
+    cursor.execute("INSERT INTO contacts VALUES (:ID, :first_name, :last_name, :address, :city, :state, :zipcode)", 
+        {
+            "ID": count, 
+            "first_name": first_name.get(), 
+            "last_name": last_name.get(), 
+            "address": address.get(),
+            "city": city.get(),
+            "state": state.get(),
+            "zipcode": zipcode.get()
+        })
+
+    connection.commit()
+    connection.close()
 
     address_tree.delete(0, END)
     address_tree.insert(parent="", index="end", iid=count, text="", values=(count+1, first_name_entry.get(), last_name_entry.get(), address_entry.get(), city_entry.get(), state_entry.get(), zipcode_entry.get()))
@@ -90,10 +103,19 @@ def add_entry():
     clear_input()
     fetch_entries()
 
-
 def remove_entry():
+    connection = sqlite3.connect("tree_database.db")
+    cursor = connection.cursor()
+
+    cursor.execute("DELETE FROM contacts WHERE ID=" + str(count))
+
+    connection.commit()
+    connection.close()
+
     for entry in address_tree.selection():
         address_tree.delete(entry)
+
+    clear_input()
 
 def select_entry(event):  
     first_name_entry.delete(0, END)
@@ -114,6 +136,14 @@ def select_entry(event):
     zipcode_entry.insert(END, selected_entry[6])
 
 def update_entry():
+    connection = sqlite3.connect("tree_database.db")
+    cursor = connection.cursor()
+
+    cursor.execute("UPDATE contacts SET first_name=?, last_name=?, address=?, city=?, state=?, zipcode=? WHERE id=?", (first_name, last_name, address, city, state, zipcode, count))
+
+    connection.commit()
+    connection.close()
+
     address_tree.item(address_tree.focus(), text="", values=(selected_entry[0], first_name_entry.get(), last_name_entry.get(), address_entry.get(), city_entry.get(), state_entry.get(), zipcode_entry.get()))
 
     first_name_entry.delete(0, END)
