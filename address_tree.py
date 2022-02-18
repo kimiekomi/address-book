@@ -107,7 +107,10 @@ def remove_entry():
     connection = sqlite3.connect("tree_database.db")
     cursor = connection.cursor()
 
-    cursor.execute("DELETE FROM contacts WHERE ID=" + str(count))
+    global selected_entry
+    id = selected_entry[0]
+    
+    cursor.execute("DELETE FROM contacts WHERE ID=id")
 
     connection.commit()
     connection.close()
@@ -127,6 +130,9 @@ def select_entry(event):
 
     global selected_entry
     selected_entry = address_tree.item(address_tree.focus(), "values")
+
+    if not selected_entry:
+        return
 
     first_name_entry.insert(END, selected_entry[1])
     last_name_entry.insert(END, selected_entry[2])

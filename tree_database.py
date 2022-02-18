@@ -32,4 +32,4 @@ class TreeDatabase:
         self.connection.close()
 
 tree_database = TreeDatabase("tree_database.db")
-tree_database.add(1, "Rachel", "Green", "123 Park Avenue", "New York", "NY", "95123")
+# tree_database.add(1, "Rachel", "Green", "123 Park Avenue", "New York", "NY", "95123")
