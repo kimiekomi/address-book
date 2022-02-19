@@ -84,16 +84,20 @@ def add_entry():
     connection = sqlite3.connect("tree_database.db")
     cursor = connection.cursor()
 
-    cursor.execute("INSERT INTO contacts VALUES (NULL, :first_name, :last_name, :address, :city, :state, :zipcode)", 
-        {
-            # "ID": count, 
-            "first_name": first_name.get(), 
-            "last_name": last_name.get(), 
-            "address": address.get(),
-            "city": city.get(),
-            "state": state.get(),
-            "zipcode": zipcode.get()
-        })
+    # one way to insert
+    # cursor.execute("INSERT INTO contacts VALUES (NULL, :first_name, :last_name, :address, :city, :state, :zipcode)", 
+    #     {
+    #         # "ID": count, 
+    #         "first_name": first_name.get(), 
+    #         "last_name": last_name.get(), 
+    #         "address": address.get(),
+    #         "city": city.get(),
+    #         "state": state.get(),
+    #         "zipcode": zipcode.get()
+    #     })
+
+    # another way to insert
+    cursor.execute("INSERT INTO contacts VALUES (NULL, ?, ?, ?, ?, ?, ?)", (first_name.get(), last_name.get(), address.get(), city.get(), state.get(), zipcode.get()))
 
     connection.commit()
     connection.close()
