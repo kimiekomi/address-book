@@ -101,8 +101,6 @@ def add_entry():
     for row in address_tree.get_children():
         address_tree.delete(row)
 
-    address_tree.insert("", END, values=(first_name_entry.get(), last_name_entry.get(), address_entry.get(), city_entry.get(), state_entry.get(), zipcode_entry.get()))
-
     clear_input()
     fetch_entries()
 
@@ -163,7 +161,7 @@ def update_entry():
 
     if debug: print(id)
 
-    cursor.execute(f"UPDATE contacts SET first_name=?, last_name=?, address=?, city=?, state=?, zipcode=? WHERE ID=?", (first_name, last_name, address, city, state, zipcode, id))
+    cursor.execute(f"UPDATE contacts SET first_name=?, last_name=?, address=?, city=?, state=?, zipcode=? WHERE ID=?", (first_name.get(), last_name.get(), address.get(), city.get(), state.get(), zipcode.get(), id))
 
     connection.commit()
     connection.close()
