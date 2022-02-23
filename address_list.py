@@ -2,7 +2,7 @@ from audioop import add
 from tkinter import *
 from tkinter import messagebox
 from tkinter import ttk
-from list_database import Database
+from database import Database
 
 root = Tk()
 root.title("Address Book")
